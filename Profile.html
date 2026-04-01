@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krishna</title>
+    <style>
+        :root {
+            --bg: #f5efe6;
+            --surface: rgba(255, 250, 241, 0.88);
+            --surface-strong: #fff8ee;
+            --text: #1e1d1a;
+            --muted: #5e584d;
+            --primary: #0f766e;
+            --primary-dark: #134e4a;
+            --accent: #c2410c;
+            --border: rgba(30, 29, 26, 0.12);
+            --shadow: 0 22px 45px rgba(73, 52, 29, 0.15);
+            --radius: 24px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(194, 65, 12, 0.18), transparent 28%),
+                radial-gradient(circle at top right, rgba(15, 118, 110, 0.16), transparent 30%),
+                linear-gradient(180deg, #f9f4eb 0%, var(--bg) 100%);
+        }
+
+        .page {
+            width: min(1120px, calc(100% - 32px));
+            margin: 32px auto;
+            display: grid;
+            gap: 22px;
+        }
+
+        .image-banner {
+            min-height: 260px;
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(120deg, rgba(15, 118, 110, 0.28), rgba(194, 65, 12, 0.2)),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 600'%3E%3Crect width='1600' height='600' fill='%23eadfce'/%3E%3Cg fill='none' stroke='%230f766e' stroke-width='3' opacity='0.35'%3E%3Cpath d='M70 470 C 240 250, 420 250, 590 470 S 940 690, 1110 470 S 1460 250, 1530 360'/%3E%3Cpath d='M110 420 C 280 200, 460 200, 630 420 S 980 640, 1150 420 S 1420 200, 1490 300'/%3E%3C/g%3E%3Cg opacity='0.95'%3E%3Crect x='1020' y='118' width='320' height='210' rx='18' fill='%231e1d1a'/%3E%3Crect x='1052' y='150' width='188' height='16' rx='8' fill='%23fff8ee'/%3E%3Crect x='1052' y='182' width='250' height='12' rx='6' fill='%23c2410c'/%3E%3Crect x='1052' y='208' width='220' height='12' rx='6' fill='%230f766e'/%3E%3Crect x='1052' y='248' width='74' height='46' rx='10' fill='%23fff8ee' opacity='0.9'/%3E%3Crect x='1140' y='248' width='74' height='46' rx='10' fill='%23fff8ee' opacity='0.72'/%3E%3Crect x='1228' y='248' width='74' height='46' rx='10' fill='%23fff8ee' opacity='0.54'/%3E%3C/g%3E%3Cg opacity='0.8'%3E%3Ccircle cx='320' cy='180' r='84' fill='%23fff8ee'/%3E%3Cpath d='M320 138 c-24 0-42 18-42 40 0 16 8 29 22 36 -24 8-42 26-51 50h142c-9-24-27-42-51-50 14-7 22-20 22-36 0-22-18-40-42-40z' fill='%23c2410c'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .image-banner::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(30, 29, 26, 0.05), rgba(30, 29, 26, 0.18));
+        }
+
+        .image-banner-content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            min-height: 260px;
+            display: grid;
+            align-content: end;
+            padding: 28px;
+            color: #fff8ee;
+        }
+
+        .image-banner-content h2 {
+            margin: 0 0 8px;
+            font-size: clamp(30px, 4.5vw, 48px);
+        }
+
+        .image-banner-content p {
+            margin: 0;
+            max-width: 620px;
+            line-height: 1.6;
+            color: rgba(255, 248, 238, 0.92);
+        }
+
+        .hero,
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.3fr 0.9fr;
+            overflow: hidden;
+        }
+
+        .banner {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 18px;
+            padding: 24px 28px;
+            align-items: center;
+        }
+
+        .banner-copy h2 {
+            margin: 0 0 10px;
+            font-size: clamp(28px, 4vw, 42px);
+        }
+
+        .banner-copy p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .banner-actions {
+            display: grid;
+            gap: 12px;
+            justify-items: start;
+        }
+
+        .banner-stage {
+            width: 100%;
+            min-height: 150px;
+            padding: 18px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(15, 118, 110, 0.14), rgba(194, 65, 12, 0.16));
+            border: 1px solid rgba(30, 29, 26, 0.08);
+            display: grid;
+            align-content: center;
+            gap: 10px;
+        }
+
+        .banner-badge {
+            display: inline-flex;
+            width: fit-content;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.72);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .banner-stage strong {
+            font-size: 26px;
+            line-height: 1.1;
+        }
+
+        .banner-stage p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .hero-copy {
+            padding: 36px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(15, 118, 110, 0.1);
+            color: var(--primary-dark);
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        h1 {
+            margin: 18px 0 14px;
+            font-size: clamp(34px, 5vw, 58px);
+            line-height: 0.98;
+        }
+
+        .lead {
+            margin: 0 0 24px;
+            max-width: 620px;
+            color: var(--muted);
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .button-row,
+        .tab-row,
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        button {
+            border: 0;
+            border-radius: 999px;
+            padding: 12px 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        .primary-btn {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 12px 24px rgba(15, 118, 110, 0.2);
+        }
+
+        .ghost-btn,
+        .tab-btn,
+        .filter-btn {
+            background: var(--surface-strong);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .active {
+            background: var(--accent);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 10px 20px rgba(194, 65, 12, 0.22);
+        }
+
+        .hero-stats {
+            padding: 28px;
+            background: linear-gradient(160deg, rgba(255, 248, 238, 0.7), rgba(255, 250, 241, 0.4));
+            display: grid;
+            gap: 16px;
+            align-content: center;
+        }
+
+        .metric-card {
+            padding: 20px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.65);
+            border: 1px solid rgba(30, 29, 26, 0.08);
+        }
+
+        .metric-card strong {
+            display: block;
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 22px;
+        }
+
+        .panel {
+            padding: 28px;
+        }
+
+        .section-title {
+            margin: 0 0 18px;
+            font-size: 26px;
+        }
+
+        .summary-grid,
+        .project-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .summary-card,
+        .project-card {
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.65);
+            border-radius: 18px;
+            border: 1px solid rgba(30, 29, 26, 0.08);
+        }
+
+        .summary-card h3,
+        .project-card h3 {
+            margin: 0 0 8px;
+        }
+
+        .summary-card p,
+        .project-card p,
+        .metric-card p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .skill-row {
+            margin-bottom: 16px;
+        }
+
+        .skill-head {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .bar {
+            height: 12px;
+            border-radius: 999px;
+            background: rgba(30, 29, 26, 0.08);
+            overflow: hidden;
+        }
+
+        .bar > span {
+            display: block;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+        }
+
+        .spotlight {
+            margin-top: 18px;
+            padding: 18px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(15, 118, 110, 0.14), rgba(194, 65, 12, 0.12));
+        }
+
+        .spotlight h3 {
+            margin: 0 0 10px;
+        }
+
+        .project-card {
+            display: none;
+        }
+
+        .project-card.visible {
+            display: block;
+        }
+
+        .chip {
+            display: inline-flex;
+            margin-top: 14px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(15, 118, 110, 0.1);
+            color: var(--primary-dark);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .note {
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        @media (max-width: 860px) {
+            .banner,
+            .hero,
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .banner,
+            .hero-copy,
+            .hero-stats,
+            .panel {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <section class="panel image-banner">
+            <div class="image-banner-content">
+                <span class="eyebrow">Profile Banner</span>
+                <h2>Krishna Engineering Portfolio</h2>
+                <p>A visual banner at the top of the page to introduce the profile before the interactive sections below.</p>
+            </div>
+        </section>
+
+        <section class="panel banner">
+            <div class="banner-copy">
+                <span class="eyebrow">Interactive Banner</span>
+                <h2>Krishna</h2>
+                <p>
+                    A software engineer profile page with a banner that can switch between engineering focus areas.
+                </p>
+            </div>
+            <div class="banner-actions">
+                <div class="button-row">
+                    <button class="primary-btn" data-banner="build">Build Mode</button>
+                    <button class="ghost-btn" data-banner="scale">Scale Mode</button>
+                    <button class="ghost-btn" data-banner="mentor">Mentor Mode</button>
+                </div>
+                <div class="banner-stage" id="bannerStage">
+                    <span class="banner-badge" id="bannerBadge">Build Mode</span>
+                    <strong id="bannerTitle">Shipping clean features with product focus.</strong>
+                    <p id="bannerText">Krishna turns requirements into polished user experiences with maintainable code.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="hero">
+            <div class="hero-copy">
+                <span class="eyebrow">Software Engineer Profile</span>
+                <h1>Krishna builds reliable products with a sharp front-end edge.</h1>
+                <p class="lead">
+                    Full-stack engineer focused on performant web applications, maintainable systems,
+                    and product experiences that make complex workflows feel simple.
+                </p>
+
+                <div class="button-row">
+                    <button class="primary-btn" id="focusButton">Show Current Focus</button>
+                    <button class="ghost-btn" id="contactButton">Reveal Contact</button>
+                </div>
+
+                <p class="note" id="heroNote">Select an action to explore the profile.</p>
+            </div>
+
+            <aside class="hero-stats">
+                <div class="metric-card">
+                    <strong>7+</strong>
+                    <p>Years delivering web platforms across SaaS, fintech, and developer tooling.</p>
+                </div>
+                <div class="metric-card">
+                    <strong>19%</strong>
+                    <p>Average improvement in page speed and app responsiveness on recent launches.</p>
+                </div>
+                <div class="metric-card">
+                    <strong>4</strong>
+                    <p>Cross-functional squads mentored through release planning and code reviews.</p>
+                </div>
+            </aside>
+        </section>
+
+        <section class="dashboard">
+            <div class="panel">
+                <h2 class="section-title">Interactive Overview</h2>
+                <div class="tab-row" id="tabRow">
+                    <button class="tab-btn active" data-tab="summary">Summary</button>
+                    <button class="tab-btn" data-tab="skills">Skills</button>
+                    <button class="tab-btn" data-tab="projects">Projects</button>
+                </div>
+
+                <div id="summaryTab" class="tab-panel">
+                    <div class="summary-grid">
+                        <article class="summary-card">
+                            <h3>Engineering Philosophy</h3>
+                            <p>Prefer simple architectures, strong review culture, and shipping in measurable increments.</p>
+                        </article>
+                        <article class="summary-card">
+                            <h3>Core Strength</h3>
+                            <p>Turns ambiguous product requirements into clean, testable, production-ready systems.</p>
+                        </article>
+                        <article class="summary-card">
+                            <h3>Leadership Style</h3>
+                            <p>Hands-on mentor who pairs on hard problems, documents decisions, and keeps teams moving.</p>
+                        </article>
+                    </div>
+                </div>
+
+                <div id="skillsTab" class="tab-panel" hidden>
+                    <div class="skill-row">
+                        <div class="skill-head"><span>JavaScript / TypeScript</span><span>92%</span></div>
+                        <div class="bar"><span style="width: 92%;"></span></div>
+                    </div>
+                    <div class="skill-row">
+                        <div class="skill-head"><span>React / UI Systems</span><span>89%</span></div>
+                        <div class="bar"><span style="width: 89%;"></span></div>
+                    </div>
+                    <div class="skill-row">
+                        <div class="skill-head"><span>Node.js / APIs</span><span>86%</span></div>
+                        <div class="bar"><span style="width: 86%;"></span></div>
+                    </div>
+                    <div class="skill-row">
+                        <div class="skill-head"><span>Cloud / DevOps</span><span>78%</span></div>
+                        <div class="bar"><span style="width: 78%;"></span></div>
+                    </div>
+
+                    <div class="spotlight" id="spotlightBox">
+                        <h3>Skill Spotlight</h3>
+                        <p>Currently strongest in building front-end systems that stay fast under real production load.</p>
+                    </div>
+                </div>
+
+                <div id="projectsTab" class="tab-panel" hidden>
+                    <div class="filter-row" id="filterRow">
+                        <button class="filter-btn active" data-filter="all">All Work</button>
+                        <button class="filter-btn" data-filter="frontend">Frontend</button>
+                        <button class="filter-btn" data-filter="backend">Backend</button>
+                        <button class="filter-btn" data-filter="leadership">Leadership</button>
+                    </div>
+
+                    <div class="project-list">
+                        <article class="project-card visible" data-category="frontend">
+                            <h3>Design System Refresh</h3>
+                            <p>Rebuilt a shared component library and reduced UI inconsistency across 12 product surfaces.</p>
+                            <span class="chip">Frontend</span>
+                        </article>
+                        <article class="project-card visible" data-category="backend">
+                            <h3>Payments Service Modernization</h3>
+                            <p>Split a monolithic workflow into service boundaries with better observability and failure handling.</p>
+                            <span class="chip">Backend</span>
+                        </article>
+                        <article class="project-card visible" data-category="leadership">
+                            <h3>Release Readiness Program</h3>
+                            <p>Introduced review checklists and rollout metrics that cut hotfix frequency across quarterly launches.</p>
+                            <span class="chip">Leadership</span>
+                        </article>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="panel">
+                <h2 class="section-title">Snapshot</h2>
+                <div class="summary-grid">
+                    <article class="summary-card">
+                        <h3>Location</h3>
+                        <p>Bengaluru, India</p>
+                    </article>
+                    <article class="summary-card">
+                        <h3>Preferred Stack</h3>
+                        <p>TypeScript, React, Node.js, PostgreSQL, Docker, AWS</p>
+                    </article>
+                    <article class="summary-card">
+                        <h3>Availability</h3>
+                        <p>Open to senior IC roles, platform engineering, and product-heavy teams.</p>
+                    </article>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <script>
+        const heroNote = document.getElementById("heroNote");
+        const focusButton = document.getElementById("focusButton");
+        const contactButton = document.getElementById("contactButton");
+        const bannerButtons = document.querySelectorAll("[data-banner]");
+        const bannerBadge = document.getElementById("bannerBadge");
+        const bannerTitle = document.getElementById("bannerTitle");
+        const bannerText = document.getElementById("bannerText");
+        const tabButtons = document.querySelectorAll(".tab-btn");
+        const tabPanels = {
+            summary: document.getElementById("summaryTab"),
+            skills: document.getElementById("skillsTab"),
+            projects: document.getElementById("projectsTab")
+        };
+        const filterButtons = document.querySelectorAll(".filter-btn");
+        const projectCards = document.querySelectorAll(".project-card");
+        const spotlightBox = document.getElementById("spotlightBox");
+
+        focusButton.addEventListener("click", () => {
+            heroNote.textContent = "Current focus: scalable front-end architecture, performance budgets, and developer experience.";
+        });
+
+        contactButton.addEventListener("click", () => {
+            heroNote.textContent = "Contact: krishna.dev@example.com | github.com/krishna-dev";
+        });
+
+        const bannerContent = {
+            build: {
+                badge: "Build Mode",
+                title: "Shipping clean features with product focus.",
+                text: "Krishna turns requirements into polished user experiences with maintainable code."
+            },
+            scale: {
+                badge: "Scale Mode",
+                title: "Designing systems that stay fast as usage grows.",
+                text: "Strong on performance, API reliability, and simplifying production complexity."
+            },
+            mentor: {
+                badge: "Mentor Mode",
+                title: "Helping teams raise code quality together.",
+                text: "Invests in reviews, pairing sessions, and team practices that improve delivery."
+            }
+        };
+
+        bannerButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                const selectedBanner = bannerContent[button.dataset.banner];
+                bannerBadge.textContent = selectedBanner.badge;
+                bannerTitle.textContent = selectedBanner.title;
+                bannerText.textContent = selectedBanner.text;
+
+                bannerButtons.forEach((item) => {
+                    item.classList.toggle("primary-btn", item === button);
+                    item.classList.toggle("ghost-btn", item !== button);
+                });
+            });
+        });
+
+        tabButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                const selectedTab = button.dataset.tab;
+
+                tabButtons.forEach((item) => item.classList.toggle("active", item === button));
+                Object.entries(tabPanels).forEach(([key, panel]) => {
+                    panel.hidden = key !== selectedTab;
+                });
+
+                if (selectedTab === "skills") {
+                    spotlightBox.querySelector("p").textContent = "Best fit for teams that need high-quality UI architecture without slowing delivery.";
+                }
+            });
+        });
+
+        filterButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                const selectedFilter = button.dataset.filter;
+                filterButtons.forEach((item) => item.classList.toggle("active", item === button));
+
+                projectCards.forEach((card) => {
+                    const matches = selectedFilter === "all" || card.dataset.category === selectedFilter;
+                    card.classList.toggle("visible", matches);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
